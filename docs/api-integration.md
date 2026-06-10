@@ -7,7 +7,7 @@ This document defines how Abbey, the AI Meal Planner nutrition assistant, should
 All backend requests should go through the nutritionist MCP endpoint:
 
 ```text
-POST https://aimealplan.com/mcp/nutritionist
+POST https://ai-mealplan.com/mcp/nutritionist
 ```
 
 Older REST-style flows should be treated as logical operations and routed through this MCP endpoint unless backend documentation explicitly replaces this contract.
@@ -63,7 +63,7 @@ After sending a finished meal plan or grocery-list file, the chat message should
 
 ## Logical Operations
 
-These are the product operations Abbey needs. Route them through `POST https://aimealplan.com/mcp/nutritionist`.
+These are the product operations Abbey needs. Route them through `POST https://ai-mealplan.com/mcp/nutritionist`.
 
 ### First Link Flow
 

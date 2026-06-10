@@ -106,7 +106,7 @@ After the file is sent, end the chat summary with one clear next-step question, 
 Primary nutritionist MCP endpoint:
 
 ```text
-POST https://aimealplan.com/mcp/nutritionist
+POST https://ai-mealplan.com/mcp/nutritionist
 ```
 
 Use this MCP endpoint for all AI Meal Planner backend requests unless the owner or backend documentation explicitly replaces it. Treat older REST paths as logical operations that should be routed through this MCP gateway when implementing current behavior.
