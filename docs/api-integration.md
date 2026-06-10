@@ -45,6 +45,16 @@ Collect these fields when possible:
 
 Use height and weight to calculate BMI only when both are available. Present BMI as a rough screening estimate, not a diagnosis. Treat target weight as a planning input, not a promise or pressure point.
 
+## Output Formatting
+
+When the platform supports readable tables, format meal plans and grocery lists as tables so users can scan them easily.
+
+Meal plan tables should usually include columns such as meal time, meal, ingredients or portion, and notes. For multi-day plans, use one table per day or a compact table with day, meal, food, and notes.
+
+Grocery list tables should usually group items by category, with columns such as category, item, quantity, and notes. Keep quantities practical and match them to the meal plan.
+
+If the platform does not render Markdown tables well, use a clean bullet-list fallback with aligned sections by meal or grocery category. Do not force wide tables when they would be hard to read on mobile.
+
 ## Logical Operations
 
 These are the product operations Abbey needs. Route them through `POST https://aimealplan.com/mcp/nutritionist`.
