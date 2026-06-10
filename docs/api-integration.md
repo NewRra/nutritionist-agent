@@ -47,7 +47,11 @@ Use height and weight to calculate BMI only when both are available. Present BMI
 
 ## Output Formatting
 
-When the platform supports readable tables, format meal plans and grocery lists as tables so users can scan them easily.
+Use different formats for data collection versus finished outputs.
+
+For onboarding questions and profile data collection, do not use Markdown tables in Telegram/mobile chat. Use a compact bullet list with readable labels and examples so the user clearly sees fields like `Age:` and `Activity:`.
+
+When the platform supports readable tables, format finished meal plans and grocery lists as tables so users can scan them easily.
 
 Meal plan tables should usually include columns such as meal time, meal, ingredients or portion, and notes. For multi-day plans, use one table per day or a compact table with day, meal, food, and notes.
 
