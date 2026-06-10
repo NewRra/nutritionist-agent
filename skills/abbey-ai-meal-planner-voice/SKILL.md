@@ -109,9 +109,20 @@ Primary nutritionist MCP endpoint:
 POST https://ai-mealplan.com/mcp/nutritionist
 ```
 
-Use this MCP endpoint for all AI Meal Planner backend requests unless the owner or backend documentation explicitly replaces it. Treat older REST paths as logical operations that should be routed through this MCP gateway when implementing current behavior.
+Use this MCP endpoint for all AI Meal Planner backend requests unless the owner or backend documentation explicitly replaces it. Treat older REST paths as logical operations that should be routed through this MCP gateway when implementing current behavior. The endpoint is a JSON-RPC 2.0 MCP server; initialize it first, then call tools with the JSON-RPC `tools/call` method.
 
-Base URL beyond the MCP endpoint, auth, request payloads, and response schemas are not fully defined yet. Do not guess them in production code; confirm them from the backend before implementing calls. If a request body format is not documented, describe the intended operation clearly and ask for the exact contract before writing production integration code.
+Known MCP tools as of 2026-06-10:
+
+- `register-user-tool`: create or find a user by Telegram chat ID and save supported onboarding fields;
+- `get-user-profile-tool`: read user profile and onboarding data;
+- `update-user-profile-tool`: merge supported profile updates into an existing profile;
+- `create-meal-plan-tool`: create a personalized weekly meal plan from stored preferences;
+- `get-current-meal-plan-tool`: read the current meal plan, optionally by date;
+- `generate-grocery-list-tool`: generate a grocery list from the current meal plan.
+
+Supported profile/onboarding fields include `chat_id`, `name`, `goal`, `diet`, `allergies`, `gender`, `age`, `weight`, `height`, `activity`, `calorie_target`, `meals_per_day`, and `cuisine`, depending on the tool. Current schemas do not expose target weight, disliked foods, or exact meal times as writable fields.
+
+Auth and final response schemas are not fully defined yet. Do not guess missing production contracts; confirm them from the backend before implementing code that depends on them.
 
 Logical operations:
 

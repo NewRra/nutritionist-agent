@@ -12,59 +12,99 @@ POST https://ai-mealplan.com/mcp/nutritionist
 
 Older REST-style flows should be treated as logical operations and routed through this MCP endpoint unless backend documentation explicitly replaces this contract.
 
-Do not invent auth, payload shape, or response schemas in production code. If the exact request contract is missing, ask the backend owner for the schema before implementing.
+The endpoint is a JSON-RPC 2.0 MCP server. Plain JSON payloads without `jsonrpc: "2.0"` are rejected.
 
-## Draft Payload Examples
+## MCP Tool Names
 
-These examples show Abbey's intended logical requests to the MCP endpoint. They are not final backend contracts until the backend confirms field names, auth, and response shape.
+Initialize the MCP server first, then call tools with the JSON-RPC `tools/call` method.
 
-### Save Or Update Profile
+Known tools as of 2026-06-10:
+
+- `register-user-tool`: create or find a user by Telegram chat ID and save supported onboarding fields.
+- `get-user-profile-tool`: read user profile and onboarding data.
+- `update-user-profile-tool`: merge supported profile updates into an existing profile.
+- `create-meal-plan-tool`: create a personalized weekly meal plan from stored preferences.
+- `get-current-meal-plan-tool`: read the current meal plan, optionally by date.
+- `generate-grocery-list-tool`: generate a grocery list from the current meal plan.
+
+Supported profile/onboarding fields include `chat_id`, `name`, `goal`, `diet`, `allergies`, `gender`, `age`, `weight`, `height`, `activity`, `calorie_target`, `meals_per_day`, and `cuisine`, depending on the tool. Current schemas do not expose target weight, disliked foods, or exact meal times as writable fields.
+
+## JSON-RPC Payload Examples
+
+These examples use the current MCP `tools/call` shape.
+
+### Register User
 
 ```json
 {
-  "operation": "profile.upsert",
-  "source": "telegram",
-  "telegram_id": "1116090730",
-  "profile": {
-    "preferred_name": "Alina",
-    "goal": "weight_loss",
-    "target_weight_kg": 58,
-    "height_cm": 175,
-    "current_weight_kg": 64,
-    "age": 20,
-    "activity_level": "medium",
-    "diet_style": "high_protein",
-    "allergies": [],
-    "disliked_foods": ["milk", "dairy"],
-    "meal_times": {
-      "breakfast": "10:00",
-      "lunch": "14:30",
-      "dinner": "19:30"
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "register-user-tool",
+    "arguments": {
+      "chat_id": "1116090730",
+      "name": "Alina",
+      "goal": "lose_weight",
+      "diet": "standard",
+      "allergies": [],
+      "age": 20,
+      "weight": 64,
+      "height": 175,
+      "activity": "moderately_active"
     }
   }
 }
 ```
 
-### Generate Meal Plan
+### Update Profile
 
 ```json
 {
-  "operation": "meal_plan.generate",
-  "source": "telegram",
-  "telegram_id": "1116090730",
-  "plan_request": {
-    "days": 1,
-    "goal": "weight_loss",
-    "target_weight_kg": 58,
-    "diet_style": "high_protein",
-    "avoid_or_limit": ["milk", "dairy"],
-    "meals_per_day": 3,
-    "meal_times": {
-      "breakfast": "10:00",
-      "lunch": "14:30",
-      "dinner": "19:30"
-    },
-    "output_format": "green_table_file"
+  "jsonrpc": "2.0",
+  "id": 2,
+  "method": "tools/call",
+  "params": {
+    "name": "update-user-profile-tool",
+    "arguments": {
+      "chat_id": "1116090730",
+      "meals_per_day": 3
+    }
+  }
+}
+```
+
+### Get User Profile
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 3,
+  "method": "tools/call",
+  "params": {
+    "name": "get-user-profile-tool",
+    "arguments": {
+      "chat_id": "1116090730"
+    }
+  }
+}
+```
+
+### Create Meal Plan
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 4,
+  "method": "tools/call",
+  "params": {
+    "name": "create-meal-plan-tool",
+    "arguments": {
+      "chat_id": "1116090730",
+      "goal": "lose_weight",
+      "diet": "standard",
+      "allergies": []
+    }
   }
 }
 ```
@@ -73,40 +113,14 @@ These examples show Abbey's intended logical requests to the MCP endpoint. They 
 
 ```json
 {
-  "operation": "grocery_list.generate",
-  "source": "telegram",
-  "telegram_id": "1116090730",
-  "meal_plan_id": "meal_plan_id_from_backend",
-  "output_format": "green_table_file"
-}
-```
-
-### Record Meal Progress
-
-```json
-{
-  "operation": "progress.record_meal",
-  "source": "telegram",
-  "telegram_id": "1116090730",
-  "progress": {
-    "date": "2026-06-10",
-    "meal": "breakfast",
-    "status": "eaten",
-    "notes": "User confirmed breakfast was completed"
-  }
-}
-```
-
-### Record Weight
-
-```json
-{
-  "operation": "weight.record",
-  "source": "telegram",
-  "telegram_id": "1116090730",
-  "weight": {
-    "date": "2026-06-10",
-    "weight_kg": 64
+  "jsonrpc": "2.0",
+  "id": 5,
+  "method": "tools/call",
+  "params": {
+    "name": "generate-grocery-list-tool",
+    "arguments": {
+      "chat_id": "1116090730"
+    }
   }
 }
 ```
