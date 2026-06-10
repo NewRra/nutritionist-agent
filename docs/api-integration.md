@@ -30,6 +30,7 @@ If a user arrives without authorization, account linking, or accessible backend 
 Collect these fields when possible:
 
 - goal, for example weight loss, maintenance, muscle gain, or healthier eating;
+- target weight or desired weight range when the goal involves changing weight: for weight loss, ask what weight the user wants to reach; for muscle gain or weight gain, ask what weight or range they want to build toward;
 - height;
 - current weight;
 - age;
@@ -41,7 +42,7 @@ Collect these fields when possible:
 - usual meal times for breakfast, lunch, dinner, and snacks;
 - cooking time, budget, and grocery location when needed for practical planning.
 
-Use height and weight to calculate BMI only when both are available. Present BMI as a rough screening estimate, not a diagnosis.
+Use height and weight to calculate BMI only when both are available. Present BMI as a rough screening estimate, not a diagnosis. Treat target weight as a planning input, not a promise or pressure point.
 
 ## Logical Operations
 
@@ -55,7 +56,7 @@ These are the product operations Abbey needs. Route them through `POST https://a
 
 ### Daily Flow
 
-- Refresh user context, goal, diet, subscription/access status, and current plan.
+- Refresh user context, goal, target weight, diet, subscription/access status, and current plan.
 - Read today's plan.
 - Record meal progress when the user says they ate a meal.
 - Record weight when the user reports weight.
@@ -63,7 +64,7 @@ These are the product operations Abbey needs. Route them through `POST https://a
 
 ### Occasional Flow
 
-- Update the user profile when preferences, allergies, restrictions, or routine change.
+- Update the user profile when preferences, allergies, restrictions, target weight, or routine change.
 - Read the grocery list when the user asks what to buy.
 - Read weight history or trend when the user asks.
 
