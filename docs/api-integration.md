@@ -29,6 +29,15 @@ Known tools as of 2026-06-10:
 
 Supported profile/onboarding fields include `chat_id`, `name`, `goal`, `diet`, `allergies`, `gender`, `age`, `weight`, `height`, `activity`, `calorie_target`, `meals_per_day`, and `cuisine`, depending on the tool. Current schemas do not expose target weight, disliked foods, or exact meal times as writable fields.
 
+## Persistence Rules
+
+- Write every user detail that the backend schema supports, including profile, onboarding, preferences, allergies, activity, height, weight, age, goal, diet, meals per day, cuisine, and calorie target when available.
+- When the user gives new or changed profile data, call `update-user-profile-tool` after intent is clear; do not only keep the change in chat memory.
+- When creating a meal plan, use `create-meal-plan-tool` so the backend creates/stores the plan, then use `get-current-meal-plan-tool` when the user wants to view or reuse it.
+- When creating a grocery list, use `generate-grocery-list-tool` so the backend creates/stores the list from the current meal plan.
+- If the user gives important data that the current MCP schema cannot write, such as target weight, disliked foods, preferred meal times, or high-protein style, document the schema gap and do not claim the value was saved until the backend supports it.
+- Prefer backend persistence over local-only generated files. Files are user-facing presentation; the source of truth should be the MCP backend whenever tools support the operation.
+
 ## JSON-RPC Payload Examples
 
 These examples use the current MCP `tools/call` shape.

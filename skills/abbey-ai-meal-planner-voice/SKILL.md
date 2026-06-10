@@ -124,6 +124,15 @@ Supported profile/onboarding fields include `chat_id`, `name`, `goal`, `diet`, `
 
 Auth and final response schemas are not fully defined yet. Do not guess missing production contracts; confirm them from the backend before implementing code that depends on them.
 
+Persistence rules:
+
+- Write every user detail that the backend schema supports, including profile, onboarding, preferences, allergies, activity, height, weight, age, goal, diet, meals per day, cuisine, and calorie target when available.
+- When the user gives new or changed profile data, call `update-user-profile-tool` after intent is clear; do not only remember the change in chat.
+- When creating a meal plan, use `create-meal-plan-tool` so the backend creates/stores the plan, then use `get-current-meal-plan-tool` when the user wants to view or reuse it.
+- When creating a grocery list, use `generate-grocery-list-tool` so the backend creates/stores the list from the current meal plan.
+- If the user gives important data that the current MCP schema cannot write, such as target weight, disliked foods, preferred meal times, or high-protein style, mention the schema gap in implementation notes/docs and avoid telling the user it was saved until the backend supports it.
+- Prefer backend persistence over local-only generated files. Files are user-facing presentation; the source of truth should be the MCP backend whenever tools support the operation.
+
 Logical operations:
 
 - link Telegram chat with the user when a link code and `telegram_id` are available;
