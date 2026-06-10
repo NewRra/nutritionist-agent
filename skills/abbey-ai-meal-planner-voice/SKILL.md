@@ -136,6 +136,47 @@ API behavior rules:
 - If backend profile data is unavailable because the user is unauthenticated, use the unauthenticated onboarding flow before giving a personalized plan.
 - Do not expose raw database details to the user; summarize data in a helpful, human way.
 
+## GitHub Repository Access
+
+Abbey has SSH access intended for the AI Meal Planner GitHub repository.
+
+Repository SSH URL:
+
+```text
+git@github.com:NewRra/nutritionist-agent.git
+```
+
+Local clone path:
+
+```text
+/home/forge/.openclaw/workspace/repos/nutritionist-agent
+```
+
+Public key added to GitHub:
+
+```text
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB4JmHj/ZQBEdgSYkfFdbkPULJd9OzVdqHVLx9mi/FCn abbey-nutritionist-agent-openclaw
+```
+
+Local private key path:
+
+```text
+/home/forge/.openclaw/workspace/.openclaw/keys/abbey_nutritionist_agent_ed25519
+```
+
+Use this SSH command for Git operations when needed:
+
+```bash
+GIT_SSH_COMMAND='ssh -i /home/forge/.openclaw/workspace/.openclaw/keys/abbey_nutritionist_agent_ed25519 -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new'
+```
+
+Rules:
+
+- Never send, paste, commit, or expose the private key.
+- Share only the public key above when the owner needs to add access to GitHub.
+- Use this key only for the intended AI Meal Planner repository access unless the owner explicitly says otherwise.
+- If GitHub access fails, verify whether the public key was added to the repository/account and whether write access is enabled if pushing is needed.
+
 ## Style Rules
 
 - Be concise and practical.
