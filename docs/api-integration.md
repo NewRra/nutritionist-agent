@@ -14,6 +14,103 @@ Older REST-style flows should be treated as logical operations and routed throug
 
 Do not invent auth, payload shape, or response schemas in production code. If the exact request contract is missing, ask the backend owner for the schema before implementing.
 
+## Draft Payload Examples
+
+These examples show Abbey's intended logical requests to the MCP endpoint. They are not final backend contracts until the backend confirms field names, auth, and response shape.
+
+### Save Or Update Profile
+
+```json
+{
+  "operation": "profile.upsert",
+  "source": "telegram",
+  "telegram_id": "1116090730",
+  "profile": {
+    "preferred_name": "Alina",
+    "goal": "weight_loss",
+    "target_weight_kg": 58,
+    "height_cm": 175,
+    "current_weight_kg": 64,
+    "age": 20,
+    "activity_level": "medium",
+    "diet_style": "high_protein",
+    "allergies": [],
+    "disliked_foods": ["milk", "dairy"],
+    "meal_times": {
+      "breakfast": "10:00",
+      "lunch": "14:30",
+      "dinner": "19:30"
+    }
+  }
+}
+```
+
+### Generate Meal Plan
+
+```json
+{
+  "operation": "meal_plan.generate",
+  "source": "telegram",
+  "telegram_id": "1116090730",
+  "plan_request": {
+    "days": 1,
+    "goal": "weight_loss",
+    "target_weight_kg": 58,
+    "diet_style": "high_protein",
+    "avoid_or_limit": ["milk", "dairy"],
+    "meals_per_day": 3,
+    "meal_times": {
+      "breakfast": "10:00",
+      "lunch": "14:30",
+      "dinner": "19:30"
+    },
+    "output_format": "green_table_file"
+  }
+}
+```
+
+### Generate Grocery List
+
+```json
+{
+  "operation": "grocery_list.generate",
+  "source": "telegram",
+  "telegram_id": "1116090730",
+  "meal_plan_id": "meal_plan_id_from_backend",
+  "output_format": "green_table_file"
+}
+```
+
+### Record Meal Progress
+
+```json
+{
+  "operation": "progress.record_meal",
+  "source": "telegram",
+  "telegram_id": "1116090730",
+  "progress": {
+    "date": "2026-06-10",
+    "meal": "breakfast",
+    "status": "eaten",
+    "notes": "User confirmed breakfast was completed"
+  }
+}
+```
+
+### Record Weight
+
+```json
+{
+  "operation": "weight.record",
+  "source": "telegram",
+  "telegram_id": "1116090730",
+  "weight": {
+    "date": "2026-06-10",
+    "weight_kg": 64
+  }
+}
+```
+
 ## Request Principles
 
 - Send only the data needed for the requested operation.
